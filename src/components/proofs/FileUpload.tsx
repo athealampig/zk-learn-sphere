@@ -32,13 +32,15 @@ export const FileUpload: React.FC<FileUploadProps> = ({
     handleFileInputChange
   } = useFileUpload({
     maxFiles,
-    acceptedTypes,
-    onSuccess: onUploadComplete
+    acceptedTypes
   });
 
   const handleUpload = async () => {
     try {
-      await uploadFiles();
+      const uploadResults = await uploadFiles();
+      if (uploadResults && onUploadComplete) {
+        onUploadComplete(uploadResults);
+      }
     } catch (error) {
       console.error('Upload failed:', error);
     }
